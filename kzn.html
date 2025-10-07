@@ -3,412 +3,465 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSell360 Progress Dashboard (Sheet-Friendly)</title>
+<title>iSell360 Progress Dashboard</title>
 <style>
-:root { --bg:#0b0f19; --card:#111729; --muted:#8892a6; --text:#e6edf3; --accent:#60a5fa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444; --info:#38bdf8; --upcoming:#94a3b8; --phase:#6366f1; --unknown:#64748b; }
-*{box-sizing:border-box}
-body{margin:0;padding:24px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Arial',Arial,'Calibri';background:linear-gradient(180deg,#0b0f19 0%,#0e1424 100%);color:var(--text)}
-.container{max-width:1300px;margin:0 auto}
-.header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px}
-.badge{padding:6px 10px;border-radius:999px;background:#0d1b33;color:var(--muted);font-size:12px}
-.grid{display:grid;gap:16px}
-.grid.kpi{grid-template-columns:repeat(6,1fr)}
-@media (max-width:1100px){.grid.kpi{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:700px){.grid.kpi{grid-template-columns:repeat(2,1fr)}}
-.card{background:radial-gradient(1200px 600px at -10% -10%,#16203b 0%,rgba(22,32,59,0) 40%),var(--card);border:1px solid rgba(96,165,250,.15);border-radius:16px;padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.25)}
-.kpi .value{font-size:28px;font-weight:700}
-.kpi .label{color:var(--muted);font-size:12px}
-.progressbar{height:10px;background:#0f1a30;border-radius:999px;overflow:hidden;margin-top:10px}
-.progressbar>div{height:100%}
-.legend{display:flex;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:12px;margin-top:8px}
-.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
-.legend .completed::before{background:var(--good)} .legend .inprogress::before{background:var(--info)} .legend .late::before{background:var(--bad)} .legend .upcoming::before{background:var(--upcoming)} .legend .inwindow::before{background:var(--warn)} .legend .phase::before{background:var(--phase)}
-.phasegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
-@media (max-width:1100px){.phasegrid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:700px){.phasegrid{grid-template-columns:1fr}}
-.phasecard{position:relative}.pc-title{font-weight:700;font-size:16px;margin-bottom:6px}.pc-subtle{color:var(--muted);font-size:12px;margin:6px 0 8px}.pc-pct{position:absolute;right:16px;top:16px;font-weight:700;color:#a7f3d0}
-.flex{display:flex;gap:16px;align-items:stretch;flex-wrap:wrap}.left{flex:1;min-width:520px}.right{flex:1;min-width:520px}
-.toolbar{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-select,input[type="text"]{background:#0f1a30;color:var(--text);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:8px 10px}
-.table{width:100%;border-collapse:collapse;font-size:15px}.table th,.table td{padding:8px 10px;border-bottom:1px solid rgba(96,165,250,.12)}.table th{text-align:left;color:var(--muted);font-weight:600;position:sticky;top:0;background:var(--card)}
-.indent-0{padding-left:0}.indent-1{padding-left:18px}.indent-2{padding-left:36px}.indent-3{padding-left:54px}
-.status-pill{font-size:10px;padding:2px 8px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.12)}
-.st-completed{background:rgba(34,197,94,.15);color:#a7f3d0;border-color:rgba(34,197,94,.35)} .st-inprogress{background:rgba(56,189,248,.15);color:#bae6fd;border-color:rgba(56,189,248,.35)} .st-late{background:rgba(239,68,68,.15);color:#fecaca;border-color:rgba(239,68,68,.35)} .st-upcoming{background:rgba(148,163,184,.15);color:#e2e8f0;border-color:rgba(148,163,184,.35)} .st-inwindow{background:rgba(245,158,11,.15);color:#fde68a;border-color:rgba(245,158,11,.35)} .st-phase{background:rgba(99,102,241,.18);color:#e0e7ff;border-color:rgba(99,102,241,.35)} .st-unknown{background:rgba(100,116,139,.18);color:#cbd5e1;border-color:rgba(100,116,139,.35)}
-.gantt-wrap{background:#0f1a30;border:1px solid rgba(96,165,250,.2);border-radius:12px;padding:8px;overflow:hidden}
-.gantt{width:100%;height:720px;display:block}
-.gantt text{ text-rendering:optimizeLegibility; paint-order:stroke fill; stroke:rgba(0,0,0,.85); stroke-width:3px; stroke-linejoin:round; font-size:16px; font-weight:600; fill:#fff; }
-.milestone-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.mcard{background:var(--card);border:1px solid rgba(96,165,250,.15);border-radius:12px;padding:12px}.mtitle{font-weight:700;margin-bottom:6px}.subtle{color:var(--muted);font-size:12px}.bad{color:#fecaca}
+:root {
+  --bg: #0b0f19;
+  --card: #111729;
+  --muted: #8892a6;
+  --text: #e6edf3;
+  --accent: #60a5fa;
+  --good: #22c55e;
+  --warn: #f59e0b;
+  --bad: #ef4444;
+  --info: #38bdf8;
+  --upcoming: #94a3b8;
+  --phase: #6366f1;
+  --unknown: #64748b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Arial', Arial, 'Calibri'; background: linear-gradient(180deg, #0b0f19 0%, #0e1424 100%); color: var(--text); }
+h1 { margin: 0 0 8px 0; }
+a { color: var(--accent); }
+.container { max-width: 1300px; margin: 0 auto; }
+.header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.badge { padding: 6px 10px; border-radius: 999px; background: #0d1b33; color: var(--muted); font-size: 12px; }
+.grid { display: grid; gap: 16px; }
+.grid.kpi { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 1100px) { .grid.kpi { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px) { .grid.kpi { grid-template-columns: repeat(2, 1fr); } }
+.card { background: radial-gradient(1200px 600px at -10% -10%, #16203b 0%, rgba(22,32,59,0) 40%) , var(--card); border: 1px solid rgba(96,165,250,0.15); border-radius: 16px; padding: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.25); }
+.kpi .value { font-size: 28px; font-weight: 700; }
+.kpi .label { color: var(--muted); font-size: 12px; }
+.progressbar { height: 10px; background: #0f1a30; border-radius: 999px; overflow: hidden; margin-top: 10px; }
+.progressbar > div { height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 12px; margin-top: 8px; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.legend .completed::before { background: var(--good); }
+.legend .inprogress::before { background: var(--info); }
+.legend .late::before { background: var(--bad); }
+.legend .upcoming::before { background: var(--upcoming); }
+.legend .inwindow::before { background: var(--warn); }
+.legend .phase::before { background: var(--phase); }
+
+.phasegrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+@media (max-width: 1100px) { .phasegrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px) { .phasegrid { grid-template-columns: 1fr; } }
+.phasecard { position: relative; }
+.pc-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+.pc-subtle { color: var(--muted); font-size: 12px; margin: 6px 0 8px; }
+.pc-pct { position: absolute; right: 16px; top: 16px; font-weight: 700; color: #a7f3d0; }
+
+.flex { display: flex; gap: 16px; align-items: stretch; }
+.left { flex: 1; }
+.right { flex: 1; }
+.toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+select, input[type="text"] { background: #0f1a30; color: var(--text); border: 1px solid rgba(96,165,250,0.3); border-radius: 8px; padding: 8px 10px; }
+
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th, .table td { padding: 8px 10px; border-bottom: 1px solid rgba(96,165,250,0.12); }
+.table th { text-align: left; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--card); }
+.indent-0 { padding-left: 0; }
+.indent-1 { padding-left: 18px; }
+.indent-2 { padding-left: 36px; }
+.indent-3 { padding-left: 54px; }
+
+.status-pill { font-size: 10px; padding: 2px 8px; border-radius: 999px; display: inline-block; border: 1px solid rgba(255,255,255,0.12); }
+.st-completed { background: rgba(34,197,94,0.15); color: #a7f3d0; border-color: rgba(34,197,94,0.35); }
+.st-inprogress { background: rgba(56,189,248,0.15); color: #bae6fd; border-color: rgba(56,189,248,0.35); }
+.st-late { background: rgba(239,68,68,0.15); color: #fecaca; border-color: rgba(239,68,68,0.35); }
+.st-upcoming { background: rgba(148,163,184,0.15); color: #e2e8f0; border-color: rgba(148,163,184,0.35); }
+.st-inwindow { background: rgba(245,158,11,0.15); color: #fde68a; border-color: rgba(245,158,11,0.35); }
+.st-phase { background: rgba(99,102,241,0.18); color: #e0e7ff; border-color: rgba(99,102,241,0.35); }
+.st-unknown { background: rgba(100,116,139,0.18); color: #cbd5e1; border-color: rgba(100,116,139,0.35); }
+
+.gantt-wrap { background: #0f1a30; border: 1px solid rgba(96,165,250,0.2); border-radius: 12px; padding: 8px; overflow: hidden; }
+.gantt { width: 100%; height: 520px; display: block; }
+.gantt text {
+  text-rendering: optimizeLegibility;
+  paint-order: stroke fill;
+  stroke: rgba(0, 0, 0, 0.85);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+
+  /* 👇 Add these to improve visibility */
+  font-size: 16px;
+  font-weight: 600;
+  fill: #ffffff; /* white text */
+}
+
+
+.milestone-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mcard { border: 1px solid rgba(96,165,250,0.2); border-radius: 12px; padding: 12px; background: #0f1a30; }
+.mtitle { font-weight: 700; margin-bottom: 6px; }
+.mitem { font-size: 10px; border-top: 1px dashed rgba(96,165,250,0.2); padding-top: 6px; margin-top: 6px; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0d1b33; color: var(--muted); font-size: 10px; }
+
+.subtle { color: var(--muted); font-size: 10px; }
+.footer { margin-top: 18px; color: var(--muted); font-size: 10px; text-align: right; }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <div>
-      <h1>iSell360 Progress Dashboard</h1>
-      <div id="asof" class="badge">Loading…</div>
-    </div>
-    <div class="subtle">Data: <span id="src"></span></div>
-  </div>
+  <div class="header">
+    <div>
+      <h1>iSell360 Progress Dashboard</h1>
+      <div class="badge">As of 2025-10-04 · Window: 2024-08-27 → 2026-03-12</div>
+    </div>
+    <div class="subtle">Standalone HTML · No external libraries</div>
+  </div>
 
-  <div class="grid kpi">
-    <div class="card kpi"><div class="label">Overall Completion (est.)</div><div class="value" id="kpiOverall">—</div><div class="progressbar"><div id="kpiOverallBar" style="width:0%;background:var(--good)"></div></div></div>
-    <div class="card kpi"><div class="label">Total Tasks (excluding Unknown)</div><div class="value" id="kpiTotal">—</div></div>
-    <div class="card kpi"><div class="label">Completed</div><div class="value" id="kpiCompleted">—</div></div>
-    <div class="card kpi"><div class="label">In Progress</div><div class="value" id="kpiInProgress">—</div></div>
-    <div class="card kpi"><div class="label">Late</div><div class="value" id="kpiLate">—</div></div>
-    <div class="card kpi"><div class="label">Upcoming</div><div class="value" id="kpiUpcoming">—</div></div>
-  </div>
+  <div class="grid kpi">
+    <div class="card kpi">
+      <div class="label">Overall Completion (est.)</div>
+      <div class="value">59.1%</div>
+      <div class="progressbar"><div style="width:59.1%; background: var(--good);"></div></div>
+    </div>
+    <div class="card kpi">
+      <div class="label">Total Tasks (excluding Unknown)</div>
+      <div class="value">33</div>
+    </div>
+    <div class="card kpi">
+      <div class="label">Completed</div>
+      <div class="value">6</div>
+    </div>
+    <div class="card kpi">
+      <div class="label">In Progress</div>
+      <div class="value">27</div>
+    </div>
+    <div class="card kpi">
+      <div class="label">Late</div>
+      <div class="value">1</div>
+    </div>
+    <div class="card kpi">
+      <div class="label">Upcoming</div>
+      <div class="value">22</div>
+    </div>
+  </div>
 
-  <div class="legend">
-    <span class="completed">Completed</span>
-    <span class="inprogress">In Progress</span>
-    <span class="late">Late</span>
-    <span class="upcoming">Upcoming</span>
-    <span class="inwindow">In-Window</span>
-    <span class="phase">Phase/Sub-phase</span>
-  </div>
+  <div class="legend">
+    <span class="completed">Completed</span>
+    <span class="inprogress">In Progress</span>
+    <span class="late">Late</span>
+    <span class="upcoming">Upcoming</span>
+    <span class="inwindow">In-Window</span>
+    <span class="phase">Phase/Sub-phase</span>
+  </div>
 
-  <h2 style="margin-top:16px;">Phase Summary</h2>
-  <div id="phaseGrid" class="phasegrid"></div>
+  <h2 style="margin-top: 16px;">Phase Summary</h2>
+  <div class="phasegrid">
+    
+    <div class="card phasecard">
+      <div class="pc-title">Scope Of Work</div>
+      <div class="pc-subtle">4 ✓ · 0 ▶ · 0 ⚠ · 0 ⏳ · 0 ⌛ · Total 4</div>
+      <div class="progressbar"><div style="width:100.0%; background: var(--good);"></div></div>
+      <div class="pc-pct">100.0%</div>
+    </div>
+    
 
-  <h2 style="margin:8px 0 8px;">Critical Milestones (next 30 days)</h2>
-  <div class="milestone-list">
-    <div class="mcard"><div class="mtitle">Due in next 30 days</div><div id="milestonesDue"></div></div>
-    <div class="mcard"><div class="mtitle">Starting in next 30 days</div><div id="milestonesStart"></div></div>
-  </div>
+    <div class="card phasecard">
+      <div class="pc-title">Infrastructure</div>
+      <div class="pc-subtle">1 ✓ · 0 ▶ · 0 ⚠ · 0 ⏳ · 0 ⌛ · Total 1</div>
+      <div class="progressbar"><div style="width:100.0%; background: var(--good);"></div></div>
+      <div class="pc-pct">100.0%</div>
+    </div>
+    
 
-  <div class="flex" style="margin-top:12px;">
-    <div class="left card">
-      <div class="toolbar">
-        <label>Status:</label>
-        <select id="statusFilter">
-          <option value="all">All</option>
-          <option value="Completed">Completed</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Late">Late</option>
-          <option value="Upcoming">Upcoming</option>
-          <option value="In-Window">In-Window</option>
-          <option value="Phase">Phase</option>
-        </select>
-        <label>Resource:</label>
-        <select id="resourceFilter"><option value="all">All</option></select>
-        <label><input type="checkbox" id="showPhases"> Show phases</label>
-        <label><input type="checkbox" id="showLabels" checked> Show labels</label>
-        <label>Search:</label><input id="searchBox" type="text" placeholder="Find a task..." />
-        <button id="reloadBtn">Reload</button>
-      </div>
-      <div style="max-height:650px;overflow:auto;border-radius:8px;">
-        <table class="table" id="taskTable">
-          <thead><tr><th>Task / Phase</th><th>Start</th><th>Finish</th><th>Resources</th><th>Status</th><th>Flag</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="subtle" style="margin-top:8px;">Phases (empty status) are headers only; KPIs count tasks only.</div>
-      <div id="error" class="subtle bad" style="margin-top:8px;"></div>
-    </div>
-    <div class="right card">
-      <div class="toolbar"><label>Gantt Zoom:</label>
-        <select id="zoom">
-          <option value="fit">Fit</option><option value="year">~Year</option><option value="quarter">~Quarter</option>
-          <option value="month">~Month</option><option value="week">~Week</option></select>
-      </div>
-      <div class="gantt-wrap"><svg id="gantt" class="gantt" viewBox="0 0 1200 720" preserveAspectRatio="none"></svg></div>
-      <div class="footer">Today line indicates the current date.</div>
-    </div>
-  </div>
+    <div class="card phasecard">
+      <div class="pc-title">Hardware</div>
+      <div class="pc-subtle">0 ✓ · 1 ▶ · 0 ⚠ · 0 ⏳ · 1 ⌛ · Total 1</div>
+      <div class="progressbar"><div style="width:50.0%; background: var(--good);"></div></div>
+      <div class="pc-pct">50.0%</div>
+    </div>
+    
+
+    <div class="card phasecard">
+      <div class="pc-title">ISELL360 Customization Features</div>
+      <div class="pc-subtle">1 ✓ · 3 ▶ · 0 ⚠ · 1 ⏳ · 2 ⌛ · Total 4</div>
+      <div class="progressbar"><div style="width:62.5%; background: var(--good);"></div></div>
+      <div class="pc-pct">62.5%</div>
+    </div>
+    
+
+    <div class="card phasecard">
+      <div class="pc-title">iSell360 Integration</div>
+      <div class="pc-subtle">0 ✓ · 8 ▶ · 1 ⚠ · 6 ⏳ · 1 ⌛ · Total 8</div>
+      <div class="progressbar"><div style="width:50.0%; background: var(--good);"></div></div>
+      <div class="pc-pct">50.0%</div>
+    </div>
+    
+
+    <div class="card phasecard">
+      <div class="pc-title">iSell360 Implementation</div>
+      <div class="pc-subtle">0 ✓ · 15 ▶ · 0 ⚠ · 15 ⏳ · 0 ⌛ · Total 15</div>
+      <div class="progressbar"><div style="width:50.0%; background: var(--good);"></div></div>
+      <div class="pc-pct">50.0%</div>
+    </div>
+    
+  </div>
+
+  <h2 style="margin: 8px 0 8px;">Critical Milestones (next 30 days)</h2>
+  <div class="milestone-list">
+    <div class="mcard">
+      <div class="mtitle">Due by 2025-11-03</div>
+      <div id="milestonesDue"></div>
+    </div>
+    <div class="mcard">
+      <div class="mtitle">Starting by 2025-11-03</div>
+      <div id="milestonesStart"></div>
+    </div>
+  </div>
+
+  <div class="flex" style="margin-top: 12px;">
+    <div class="left card">
+      <div class="toolbar">
+        <label>Status:</label>
+        <select id="statusFilter">
+          <option value="all">All</option>
+          <option value="Completed">Completed</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Late">Late</option>
+          <option value="Upcoming">Upcoming</option>
+          <option value="In-Window">In-Window</option>
+          <option value="Phase">Phase</option>
+        </select>
+        <label>Resource:</label>
+        <select id="resourceFilter">
+          <option value="all">All</option>
+          <option value="AlMaha">AlMaha</option>
+<option value="BMB">BMB</option>
+<option value="Dart Tech">Dart Tech</option>
+        </select>
+        <label><input type="checkbox" id="showPhases"> Show phases</label>
+        <label><input type="checkbox" id="showLabels" checked> Show labels</label>
+        <label>Search:</label>
+        <input id="searchBox" type="text" placeholder="Find a task..." />
+      </div>
+      <div style="max-height: 650px; overflow:auto; border-radius: 8px;">
+        <table class="table" id="taskTable">
+          <thead>
+            <tr>
+              <th>Task / Phase</th>
+              <th>Start</th>
+              <th>Finish</th>
+              <th>Resources</th>
+              <th>Status</th>
+              <th>Flag</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="subtle" style="margin-top:8px;">Phases (empty status) are headers only; KPIs count tasks only.</div>
+    </div>
+
+    <div class="right card">
+      <div class="toolbar">
+        <label>Gantt Zoom:</label>
+        <select id="zoom">
+          <option value="fit">Fit</option>
+          <option value="year">~Year</option>
+          <option value="quarter">~Quarter</option>
+          <option value="month">~Month</option>
+          <option value="week">~Week</option>
+        </select>
+      </div>
+      <div class="gantt-wrap">
+        <svg id="gantt" class="gantt" viewBox="0 0 1200 520" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="footer">Today line indicates the current date.</div>
+    </div>
+  </div>
 </div>
 
 <script>
-// ==== CONFIG - REPLACE THIS URL WITH YOUR PUBLISHED CSV LINK ====
-const CSV_URL = "https://docs.google.com/spreadsheets/d/1eN6Yxrh1MxL46eudpHlguifKVdthBKYZUPQ0MJZXLkU/edit?gid=688138624#gid=688138624"; // PASTE YOUR URL HERE
+const DATA = {
+  rows: [{"name": "ISELL360 Project Plan", "level": 0, "phase": "", "type": "Phase", "start": "2024-08-27", "finish": "2026-03-12", "resources": "", "status": "", "flag": "Phase"}, {"name": "Scope Of Work", "level": 1, "phase": "Scope Of Work", "type": "Phase", "start": "2024-08-27", "finish": "2025-07-08", "resources": "", "status": "", "flag": "Phase"}, {"name": "iSell360 Kickoff meeting", "level": 2, "phase": "Scope Of Work", "type": "Task", "start": "2024-08-27", "finish": "2024-08-27", "resources": "AlMaha,BMB", "status": "Completed", "flag": "Completed"}, {"name": "iSell360 Gap Analysis Session", "level": 2, "phase": "Scope Of Work", "type": "Task", "start": "2024-09-17", "finish": "2025-02-11", "resources": "AlMaha,BMB", "status": "Completed", "flag": "Completed"}, {"name": "iSell360 Gap Analysis review and approval", "level": 2, "phase": "Scope Of Work", "type": "Task", "start": "2024-10-03", "finish": "2025-02-13", "resources": "AlMaha", "status": "Completed", "flag": "Completed"}, {"name": "iSell360 Project Plan and Approval", "level": 2, "phase": "Scope Of Work", "type": "Task", "start": "2025-07-01", "finish": "2025-07-08", "resources": "BMB,AlMaha", "status": "Completed", "flag": "Completed"}, {"name": "Infrastructure", "level": 1, "phase": "Infrastructure", "type": "Phase", "start": "2024-11-21", "finish": "2024-11-21", "resources": "", "status": "", "flag": "Phase"}, {"name": "iSell360 Server Readiness", "level": 2, "phase": "Infrastructure", "type": "Task", "start": "2024-11-21", "finish": "2024-11-21", "resources": "BMB", "status": "Completed", "flag": "Completed"}, {"name": "Hardware", "level": 1, "phase": "Hardware", "type": "Phase", "start": "2024-10-03", "finish": "2025-12-01", "resources": "", "status": "", "flag": "Phase"}, {"name": "Device Readiness", "level": 2, "phase": "Hardware", "type": "Task", "start": "2024-10-03", "finish": "2025-12-01", "resources": "AlMaha", "status": "In Progress", "flag": "In-Window"}, {"name": "ISELL360 Customization Features", "level": 1, "phase": "ISELL360 Customization Features", "type": "Phase", "start": "2025-02-13", "finish": "2026-01-15", "resources": "", "status": "", "flag": "Phase"}, {"name": "Pending Features Analysis", "level": 2, "phase": "ISELL360 Customization Features", "type": "Task", "start": "2025-02-13", "finish": "2025-04-08", "resources": "BMB", "status": "Completed", "flag": "Completed"}, {"name": "Pending Primary Development", "level": 2, "phase": "ISELL360 Customization Features", "type": "Task", "start": "2025-05-01", "finish": "2025-12-15", "resources": "BMB", "status": "In Progress", "flag": "In-Window"}, {"name": "Pending Secondary Development", "level": 2, "phase": "ISELL360 Customization Features", "type": "Task", "start": "2025-12-15", "finish": "2026-01-14", "resources": "", "status": "In Progress", "flag": "Upcoming"}, {"name": "Data Cleansing", "level": 2, "phase": "ISELL360 Customization Features", "type": "Phase", "start": "2025-04-14", "finish": "2025-10-31", "resources": "", "status": "", "flag": "Phase"}, {"name": "Master Data Cleansing", "level": 3, "phase": "ISELL360 Customization Features", "type": "Task", "start": "2025-04-14", "finish": "2025-10-30", "resources": "AlMaha", "status": "In Progress", "flag": "In-Window"}, {"name": "iSell360 Integration", "level": 1, "phase": "iSell360 Integration", "type": "Phase", "start": "2025-06-16", "finish": "2025-11-20", "resources": "", "status": "", "flag": "Phase"}, {"name": "Integration Development (Input) and testing", "level": 2, "phase": "iSell360 Integration", "type": "Task", "start": "2025-06-16", "finish": "2025-10-09", "resources": "Dart Tech", "status": "In Progress", "flag": "In-Window"}, {"name": "Integration Input Validation", "level": 2, "phase": "iSell360 Integration", "type": "Task", "start": "2025-10-13", "finish": "2025-10-15", "resources": "AlMaha,BMB,Dart Tech", "status": "In Progress", "flag": "Upcoming"}, {"name": "Receive API Output documentation", "level": 2, "phase": "iSell360 Integration", "type": "Task", "start": "2025-07-01", "finish": "2025-08-05", "resources": "Dart Tech", "status": "In Progress", "flag": "Late"}, {"name": "Integration Development (Output)", "level": 2, "phase": "iSell360 Integration", "type": "Task", "start": "2025-10-20", "finish": "2025-11-10", "resources": "BMB,Dart Tech", "status": "In Progress", "flag": "Upcoming"}, {"name": "Integration testing and approval", "level": 2, "phase": "iSell360 Integration", "type": "Task", "start": "2025-11-11", "finish": "2025-11-20", "resources": "AlMaha,BMB,Dart Tech", "status": "In Progress", "flag": "Upcoming"}, {"name": "Migration Preparation", "level": 1, "phase": "iSell360 Integration", "type": "Task", "start": "2026-01-01", "finish": "2026-01-15", "resources": "", "status": "In Progress", "flag": "Upcoming"}, {"name": "Input Master Data", "level": 2, "phase": "iSell360 Integration", "type": "Task", "start": "2026-01-01", "finish": "2026-01-12", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "iSell360 Customer Open Invoices", "level": 2, "phase": "iSell360 Integration", "type": "Task", "start": "2026-01-12", "finish": "2026-01-15", "resources": "AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "iSell360 Implementation", "level": 1, "phase": "iSell360 Implementation", "type": "Phase", "start": "2025-12-15", "finish": "2026-01-31", "resources": "", "status": "", "flag": "Phase"}, {"name": "CRP & Training", "level": 2, "phase": "iSell360 Implementation", "type": "Phase", "start": "2025-12-15", "finish": "2025-12-30", "resources": "", "status": "", "flag": "Phase"}, {"name": "CRP (Conference Room Pilot)", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2025-12-15", "finish": "2025-12-17", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "UAT (User Acceptance Testing)", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2025-12-18", "finish": "2025-12-21", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Training IT Team", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2025-12-27", "finish": "2025-12-27", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Power User Training", "level": 0, "phase": "iSell360 Implementation", "type": "Task", "start": "2025-12-28", "finish": "2025-12-28", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Training/Simulation Frontend + Backend ( DSD)", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2025-12-29", "finish": "2025-12-29", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Training/Simulation Frontend + Backend ( Presale/Delivery)", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2025-12-30", "finish": "2025-12-30", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "iSell360 Pilot Run", "level": 2, "phase": "iSell360 Implementation", "type": "Phase", "start": "2026-01-03", "finish": "2026-01-08", "resources": "", "status": "", "flag": "Phase"}, {"name": "Pilot Preparation (Enviornment Setup + Access Rights + Workflows)", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-03", "finish": "2026-01-03", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "iSell360 Migrate Pilot Data (Open Invoices)", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-04", "finish": "2026-01-05", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Pilot Launch", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-05", "finish": "2026-01-08", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Environment Readiness Production", "level": 2, "phase": "iSell360 Implementation", "type": "Phase", "start": "2026-01-02", "finish": "2026-01-09", "resources": "", "status": "", "flag": "Phase"}, {"name": "Master Data Freeze", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-05", "finish": "2026-01-09", "resources": "AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Input Master Data + Opening", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-05", "finish": "2026-01-09", "resources": "AlMaha,BMB", "status": "In Progress", "flag": "Upcoming"}, {"name": "Access Right System Setup", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-05", "finish": "2026-01-09", "resources": "BMB", "status": "In Progress", "flag": "Upcoming"}, {"name": "Production Migration/Integration (Cutover Activities)", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-05", "finish": "2026-01-09", "resources": "AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "iSell360 Live Run", "level": 2, "phase": "iSell360 Implementation", "type": "Phase", "start": "2026-01-10", "finish": "2026-01-31", "resources": "", "status": "", "flag": "Phase"}, {"name": "Go Live", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-10", "finish": "2026-01-15", "resources": "BMB,AlMaha", "status": "In Progress", "flag": "Upcoming"}, {"name": "Hyper Care", "level": 3, "phase": "iSell360 Implementation", "type": "Task", "start": "2026-01-15", "finish": "2026-01-31", "resources": "BMB", "status": "In Progress", "flag": "Upcoming"}],
+  phases: [{"name": "Scope Of Work", "pct": 100.0, "completed": 4, "inprogress": 0, "late": 0, "upcoming": 0, "inwindow": 0, "total": 4}, {"name": "Infrastructure", "pct": 100.0, "completed": 1, "inprogress": 0, "late": 0, "upcoming": 0, "inwindow": 0, "total": 1}, {"name": "Hardware", "pct": 50.0, "completed": 0, "inprogress": 1, "late": 0, "upcoming": 0, "inwindow": 1, "total": 1}, {"name": "ISELL360 Customization Features", "pct": 62.5, "completed": 1, "inprogress": 3, "late": 0, "upcoming": 1, "inwindow": 2, "total": 4}, {"name": "iSell360 Integration", "pct": 50.0, "completed": 0, "inprogress": 8, "late": 1, "upcoming": 6, "inwindow": 1, "total": 8}, {"name": "iSell360 Implementation", "pct": 50.0, "completed": 0, "inprogress": 15, "late": 0, "upcoming": 15, "inwindow": 0, "total": 15}],
+  milestones: {"due": [], "starting": []},
+  resources: ["AlMaha", "BMB", "Dart Tech"],
+  minDate: "2024-08-27",
+  maxDate: "2026-03-12",
+  today: "2025-10-04"
+};
 
-// Flexible CSV headings supported:
-// "Task Name", "Start", "Finish", "Resource Names", "Status", optional: "Level", "Phase", "Type"
-// Also supports the earlier schema: "name","level","phase","type","start","finish","resources","status","flag"
+function parseDate(s) { return s ? new Date(s + "T00:00:00") : null; }
+function daysBetween(a, b) { return Math.round((b - a) / 86400000); }
+function fmt(s) { return s || "&mdash;"; }
 
-// Update the source label with the new method
-document.getElementById("src").textContent = `Direct CSV URL`;
-
-const state = { rows:[], phases:[], milestones:{due:[], starting:[]}, resources:[], minDate:null, maxDate:null, today: new Date().toISOString().slice(0,10)};
-const errorEl = document.getElementById("error"), asofEl = document.getElementById("asof");
-
-function parseAnyDate(s){
-  if(!s) return "";
-  // common shapes: "Tue 27-Aug-2024" or "27-Aug-2024" or "2024-08-27"
-  let t = s.trim();
-  // remove weekday prefix if present
-  if (/^[A-Za-z]{3}\s/.test(t)) t = t.replace(/^[A-Za-z]{3}\s+/, "");
-  // replace 27-Aug-2024 -> 27 Aug 2024 (Date can parse)
-  t = t.replace(/(\d{1,2})-([A-Za-z]{3})-(\d{4})/, "$1 $2 $3");
-  const d = new Date(t);
-  if (isNaN(d)) return "";
-  return d.toISOString().slice(0,10);
+function taskHasResource(t, r) {
+  if (r === "all") return true;
+  if (!t.resources) return false;
+  return t.resources.split(",").map(x => x.trim()).includes(r);
 }
 
-function csvSplit(line){
-  // minimal CSV splitter that handles quotes and commas
-  const out=[], re=/("([^"]*(?:""[^"]*)*)"|[^,]*)(,|$)/g; let m, i=0;
-  while((m=re.exec(line))!==null){ let cell=m[1]||""; if(cell.startsWith('"')){ cell=cell.slice(1,-1).replace(/""/g,'"'); } out.push(cell.trim()); if(m[3]==="") break; i++; }
-  return out;
+function renderMilestoneList(id, arr, kind) {
+  const div = document.getElementById(id);
+  div.innerHTML = "";
+  if (!arr || arr.length === 0) { div.innerHTML = '<div class="subtle">No milestones in window.</div>'; return; }
+  arr.forEach(m => {
+    const d = document.createElement("div");
+    d.className = "mitem";
+    d.innerHTML = `<strong>${m.name}</strong> <span class="badge">${m.phase || "—"}</span><br/>
+      ${kind==="due" ? "Finish" : "Start"}: <span>${fmt(kind==="due" ? m.finish : m.start)}</span><br/>
+      Resources: <span>${fmt(m.resources)}</span> · Status: <span>${m.status}</span>`;
+    div.appendChild(d);
+  });
 }
 
-function csvToRows(csv){
-  const lines = csv.trim().split(/\r?\n/);
-  const header = csvSplit(lines[0]).map(h=>h.trim().toLowerCase());
-  const idx = (h) => header.indexOf(h);
-  const hasModern = idx("name")>-1 && idx("start")>-1;
-  const hasFriendly = idx("task name")>-1 && (idx("start")>-1 || idx("start date")>-1);
-
-  const rows=[];
-  for(let i=1;i<lines.length;i++){
-    const cols = csvSplit(lines[i]);
-    function g(h){ const j=idx(h); return j>=0 ? cols[j] : ""; }
-    let r;
-    if (hasModern){
-      r = { name:g("name"), level:parseInt(g("level")||"0",10)||0, phase:g("phase")||"", type:g("type")||"Task",
-            start:g("start"), finish:g("finish"), resources:g("resources")||"", status:g("status")||"", flag:g("flag")||"" };
-    } else if (hasFriendly){
-      r = { name:g("task name")||g("task"), level:parseInt(g("level")||"0",10)||0, phase:g("phase")||"", type:g("type")||"",
-            start:g("start")||g("start date"), finish:g("finish")||g("end date"), resources:g("resource names")||g("resources")||"", status:g("status")||"", flag:g("flag")||"" };
-    } else {
-      continue;
-    }
-    // normalize type/flag/phase
-    r.type = r.type || (r.status ? "Task" : "Phase");
-    r.start = parseAnyDate(r.start);
-    r.finish = parseAnyDate(r.finish);
-    // derive flag if needed
-    if(!r.flag){
-      const today = new Date(state.today+"T00:00:00");
-      const s = r.start ? new Date(r.start+"T00:00:00"):null;
-      const e = r.finish ? new Date(r.finish+"T00:00:00"):null;
-      if ((r.status||"").toLowerCase()==="completed") r.flag="Completed";
-      else if (s && s>today) r.flag="Upcoming";
-      else if (e && e<today) r.flag="Late";
-      else r.flag="In-Window";
-    }
-    rows.push(r);
-  }
-  return rows;
-}
-
-function uniq(arr){ return Array.from(new Set(arr)).filter(Boolean); }
-function fmt(s){ return s || "—"; }
-
-function buildFromRows(rows){
-  const resources = uniq(rows.flatMap(r => (r.resources||"").split(",").map(x=>x.trim())));
-  state.resources = resources;
-  const dates = rows.flatMap(r=>[r.start,r.finish]).filter(Boolean);
-  state.minDate = dates.length ? dates.reduce((a,b)=>a<b?a:b) : state.today;
-  state.maxDate = dates.length ? dates.reduce((a,b)=>a>b?a:b) : state.today;
-
-  const map = new Map();
-  rows.forEach(r=>{
-    const ph = r.phase || "";
-    if(!ph) return;
-    if(!map.has(ph)) map.set(ph,{name:ph,completed:0,inprogress:0,late:0,upcoming:0,inwindow:0,total:0});
-    if ((r.type||"Task").toLowerCase()!=="task") return;
-    const e = map.get(ph);
-    const s = (r.status||"").toLowerCase(), f=(r.flag||"").toLowerCase();
-    e.total++;
-    if (s==="completed") e.completed++; else if (f==="late") e.late++; else if (f==="upcoming") e.upcoming++; else if (s==="in progress") e.inprogress++; else e.inwindow++;
-  });
-  state.phases = Array.from(map.values()).map(p=>({ ...p, pct: p.total ? Math.round((p.completed/p.total)*1000)/10 : 0 }));
-
-  const today = new Date(state.today+"T00:00:00"); const d30=new Date(today); d30.setDate(d30.getDate()+30);
-  const due=[], starting=[];
-  rows.filter(r=>(r.type||"Task").toLowerCase()==="task").forEach(r=>{
-    const s = r.start? new Date(r.start+"T00:00:00"):null, e = r.finish? new Date(r.finish+"T00:00:00"):null;
-    if (e && e>=today && e<=d30) due.push(r);
-    if (s && s>=today && s<=d30) starting.push(r);
-  });
-  state.milestones = {due, starting};
-}
-
-function pillClass(s){ switch((s||"").toLowerCase()){case"completed":return"st-completed";case"in progress":return"st-inprogress";case"late":return"st-late";case"upcoming":return"st-upcoming";case"in-window":return"st-inwindow";case"phase":return"st-phase";default:return"st-unknown";} }
-function taskHasResource(t,r){ if(r==="all") return true; if(!t.resources) return false; return t.resources.split(",").map(x=>x.trim()).includes(r); }
-
-function renderKPIs(rows){
-  const tasks = rows.filter(r => (r.type||"Task").toLowerCase()==="task");
-  const total = tasks.filter(t => (t.flag||"")!=="Unknown").length;
-  const completed = tasks.filter(t => (t.status||"").toLowerCase()==="completed").length;
-  const inprogress = tasks.filter(t => (t.status||"").toLowerCase()==="in progress").length;
-  const late = tasks.filter(t => (t.flag||"").toLowerCase()==="late").length;
-  const upcoming = tasks.filter(t => (t.flag||"").toLowerCase()==="upcoming").length;
-  const overall = total ? Math.round((completed/total)*1000)/10 : 0;
-  document.getElementById("kpiTotal").textContent = total;
-  document.getElementById("kpiCompleted").textContent = completed;
-  document.getElementById("kpiInProgress").textContent = inprogress;
-  document.getElementById("kpiLate").textContent = late;
-  document.getElementById("kpiUpcoming").textContent = upcoming;
-  document.getElementById("kpiOverall").textContent = overall.toFixed(1) + "%";
-  document.getElementById("kpiOverallBar").style.width = overall + "%";
-  asofEl.textContent = `As of ${state.today} · Window: ${state.minDate} → ${state.maxDate}`;
-}
-
-function renderPhaseGrid(){
-  const grid = document.getElementById("phaseGrid");
-  grid.innerHTML = "";
-  state.phases.forEach(p=>{
-    const el = document.createElement("div");
-    el.className="card phasecard";
-    el.innerHTML = `<div class="pc-title">${p.name}</div>
-      <div class="pc-subtle">${p.completed} ✓ · ${p.inprogress} ▶ · ${p.late} ⚠ · ${p.upcoming} ⏳ · ${p.inwindow} ⌛ · Total ${p.total}</div>
-      <div class="progressbar"><div style="width:${p.pct}%;background:var(--good)"></div></div>
-      <div class="pc-pct">${p.pct.toFixed(1)}%</div>`;
-    grid.appendChild(el);
-  });
-}
-
-function renderMilestoneList(id,arr,kind){
-  const div = document.getElementById(id);
-  div.innerHTML = "";
-  if(!arr || arr.length===0){ div.innerHTML = '<div class="subtle">No milestones in window.</div>'; return; }
-  arr.forEach(m=>{
-    const d=document.createElement("div");
-    d.className="mitem";
-    d.innerHTML = `<strong>${m.name}</strong> <span class="badge">${m.phase||"—"}</span><br/>
-      ${kind==="due"?"Finish":"Start"}: <span>${m[kind==="due"?"finish":"start"]||"—"}</span><br/>
-      Resources: <span>${m.resources||"—"}</span> · Status: <span>${m.status||"—"}</span>`;
-    div.appendChild(d);
-  });
+function pillClass(s) {
+  switch((s||"").toLowerCase()) {
+    case "completed": return "st-completed";
+    case "in progress": return "st-inprogress";
+    case "late": return "st-late";
+    case "upcoming": return "st-upcoming";
+    case "in-window": return "st-inwindow";
+    case "phase": return "st-phase";
+    default: return "st-unknown";
+  }
 }
 
 const tbody = document.querySelector("#taskTable tbody");
-function renderTable(rows){
-  const statusFilter=document.getElementById("statusFilter").value;
-  const resourceFilter=document.getElementById("resourceFilter").value;
-  const showPhases=document.getElementById("showPhases").checked;
-  const q=document.getElementById("searchBox").value.trim().toLowerCase();
-  tbody.innerHTML="";
-  rows.forEach(t=>{
-    if(!showPhases && (t.type||"Task")==="Phase") return;
-    if(statusFilter!=="all" && t.flag!==statusFilter && t.status!==statusFilter && t.type!==statusFilter) return;
-    if(!taskHasResource(t,resourceFilter)) return;
-    if(q && !t.name.toLowerCase().includes(q)) return;
-    const tr=document.createElement("tr");
-    const indentClass="indent-"+Math.min(3, t.level||0);
-    const typeBadge=(t.type||"Task")==="Phase" ? `<span class="status-pill st-phase">Phase</span>`:"";
-    tr.innerHTML = `<td class="${indentClass}">${t.name} ${typeBadge}</td>
-      <td>${t.start||"—"}</td><td>${t.finish||"—"}</td><td>${t.resources||"—"}</td>
-      <td>${(t.type||"Task")==="Phase"?"—":`<span class="status-pill ${pillClass(t.status)}">${t.status||"—"}</span>`}</td>
-      <td><span class="status-pill ${pillClass(t.flag)}">${t.flag||"—"}</span></td>`;
-    tbody.appendChild(tr);
-  });
+function renderTable() {
+  const statusFilter = document.getElementById('statusFilter').value;
+  const resourceFilter = document.getElementById('resourceFilter').value;
+  const showPhases = document.getElementById('showPhases').checked;
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  tbody.innerHTML = "";
+  DATA.rows.forEach(t => {
+    if (!showPhases && t.type === "Phase") return;
+    if (statusFilter !== "all" && t.flag !== statusFilter && t.status !== statusFilter && t.type !== statusFilter) return;
+    if (!taskHasResource(t, resourceFilter)) return;
+    if (q && !t.name.toLowerCase().includes(q)) return;
+    const tr = document.createElement("tr");
+    const indentClass = "indent-" + Math.min(3, t.level);
+    const typeBadge = t.type === "Phase" ? `<span class="status-pill st-phase">Phase</span>` : "";
+    tr.innerHTML = `
+      <td class="${indentClass}">${t.name} ${typeBadge}</td>
+      <td>${fmt(t.start)}</td>
+      <td>${fmt(t.finish)}</td>
+      <td>${fmt(t.resources)}</td>
+      <td>${t.type==="Phase" ? "—" : `<span class="status-pill ${pillClass(t.status)}">$${t.status || "—"}</span>`}</td>
+      <td><span class="status-pill ${pillClass(t.flag)}">${t.flag}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
-function renderGantt(rows){
-  const svg=document.getElementById("gantt"); const zoom=document.getElementById("zoom").value;
-  const W=1200,H=720,M=50,rowH=32,pad=12; svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
-  const minDate=new Date(state.minDate+"T00:00:00"), maxDate=new Date(state.maxDate+"T00:00:00");
-  const today=new Date(state.today+"T00:00:00"); let start=new Date(minDate), end=new Date(maxDate);
-  if(zoom==="year"){start=new Date(today);start.setFullYear(start.getFullYear()-0.5);end=new Date(today);end.setFullYear(end.getFullYear()+0.5);}
-  if(zoom==="quarter"){start=new Date(today);start.setMonth(start.getMonth()-3);end=new Date(today);end.setMonth(end.getMonth()+3);}
-  if(zoom==="month"){start=new Date(today);start.setMonth(start.getMonth()-1);end=new Date(today);end.setMonth(end.getMonth()+1);}
-  if(zoom==="week"){start=new Date(today);start.setDate(start.getDate()-7);end=new Date(today);end.setDate(end.getDate()+7);}
-  if(zoom==="fit"){start=minDate;end=maxDate;}
-  const totalDays=Math.max(1,Math.round((end-start)/86400000)), innerW=W-M*2, innerH=H-M*2;
+document.getElementById('statusFilter').addEventListener('change', () => { renderTable(); renderGantt(); });
+document.getElementById('resourceFilter').addEventListener('change', () => { renderTable(); renderGantt(); });
+document.getElementById('showPhases').addEventListener('change', () => { renderTable(); });
+document.getElementById('searchBox').addEventListener('input', () => { renderTable(); renderGantt(); });
+document.getElementById('showLabels').addEventListener('change', () => { renderGantt(); });
 
-  const statusFilter=document.getElementById("statusFilter").value;
-  const resourceFilter=document.getElementById("resourceFilter").value;
-  const q=document.getElementById("searchBox").value.trim().toLowerCase();
-  const showLabels=document.getElementById("showLabels").checked;
+function renderGantt() {
+  const svg = document.getElementById('gantt');
+  const zoom = document.getElementById('zoom').value;
+  const W = 1200, H = 700, M = 50, rowH = 32, pad = 12;  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const minDate = parseDate(DATA.minDate), maxDate = parseDate(DATA.maxDate);
+  const today = parseDate(DATA.today);
+  let start = new Date(minDate), end = new Date(maxDate);
+  if (zoom === "year") { start = new Date(today); start.setFullYear(start.getFullYear()-0.5); end = new Date(today); end.setFullYear(end.getFullYear()+0.5); }
+  if (zoom === "quarter") { start = new Date(today); start.setMonth(start.getMonth()-3); end = new Date(today); end.setMonth(end.getMonth()+3); }
+  if (zoom === "month") { start = new Date(today); start.setMonth(start.getMonth()-1); end = new Date(today); end.setMonth(end.getMonth()+1); }
+  if (zoom === "week") { start = new Date(today); start.setDate(start.getDate()-7); end = new Date(today); end.setDate(end.getDate()+7); }
+  if (zoom === "fit") { start = minDate; end = maxDate; }
+  const totalDays = Math.max(1, Math.round((end - start) / 86400000));
+  const innerW = W - M*2;
+  const innerH = H - M*2;
 
-  const tasks=rows.filter(t=>(t.type||"Task")==="Task").filter(t=>{
-    if(statusFilter!=="all" && t.flag!==statusFilter && t.status!==statusFilter) return false;
-    if(!taskHasResource(t,resourceFilter)) return false;
-    if(q && !t.name.toLowerCase().includes(q)) return false;
-    return t.start && t.finish;
-  }).sort((a,b)=> (a.start.localeCompare(b.start) || (a.level||0)-(b.level||0) || a.name.localeCompare(b.name)));
+  const statusFilter = document.getElementById('statusFilter').value;
+  const resourceFilter = document.getElementById('resourceFilter').value;
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  const showLabels = document.getElementById('showLabels').checked;
 
-  const startY=M+24;
-  const defs=`<defs>
-    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="black" flood-opacity="0.4"/>
-    </filter>
-    <filter id="textHalo" x="-20%" y="-20%" width="140%" height="140%">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="1.2" result="thickened"/>
-      <feGaussianBlur in="thickened" stdDeviation="1.2" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>`;
-  let grid=`<rect x="${M}" y="${M}" width="${innerW}" height="${innerH}" fill="#0b1429" stroke="rgba(96,165,250,0.25)"/>`;
-  let cursor=new Date(start); cursor.setDate(1);
-  while(cursor<=end){
-    const x=M + (Math.round((cursor-start)/86400000)/totalDays)*innerW;
-    grid+=`<line x1="${x}" y1="${M}" x2="${x}" y2="${H-M}" stroke="rgba(96,165,250,0.12)" />`;
-    const label=cursor.toISOString().slice(0,7);
-    grid+=`<text x="${x+4}" y="${M-8}" fill="#94a3b8" font-size="12">${label}</text>`;
-    cursor.setMonth(cursor.getMonth()+1);
-  }
-  if(today>=start && today<=end){
-    const tx=M + (Math.round((today-start)/86400000)/totalDays)*innerW;
-    grid+=`<line x1="${tx}" y1="${M}" x2="${tx}" y2="${H-M}" stroke="#f59e0b" stroke-width="2"/>`;
-    grid+=`<text x="${tx+6}" y="${M+12}" fill="#f59e0b" font-size="12">Today</text>`;
-  }
+  const tasks = DATA.rows.filter(t => t.type==="Task").filter(t => {
+    if (statusFilter !== "all" && t.flag !== statusFilter && t.status !== statusFilter) return false;
+    if (!taskHasResource(t, resourceFilter)) return false;
+    if (q && !t.name.toLowerCase().includes(q)) return false;
+    return t.start && t.finish;
+  });
 
-  let bars="";
-  const colorFor=(t)=>{ const s=(t.status||"").toLowerCase(), f=(t.flag||"").toLowerCase();
-    if(s==="completed") return "var(--good)"; if(f==="late") return "var(--bad)"; if(f==="in-window") return "var(--warn)"; if(s==="in progress") return "var(--info)"; if(f==="upcoming") return "var(--upcoming)"; return "var(--unknown)";};
-  const approxTextWidth=(txt)=> Math.max(16, Math.round(txt.length*8.5)+10);
+  tasks.sort((a,b) => (a.start.localeCompare(b.start) || a.level - b.level || a.name.localeCompare(b.name)));
+  const startY = M + 24;
+  let grid = `<rect x="${M}" y="${M}" width="${innerW}" height="${innerH}" fill="#0b1429" stroke="rgba(96,165,250,0.25)"/>`;
 
-  tasks.forEach((t,i)=>{
-    const y=startY + i*(rowH+pad);
-    const s=new Date(t.start+"T00:00:00"), e=new Date(t.finish+"T00:00:00");
-    const xs=M + (Math.round((s-start)/86400000)/totalDays)*innerW;
-    const xe=M + (Math.round((e-start)/86400000)/totalDays)*innerW;
-    const w=Math.max(2, xe-xs);
-    const c=colorFor(t);
-    bars += `<rect x="${xs}" y="${y}" width="${w}" height="${rowH}" rx="4" fill="${c}" filter="url(#softShadow)" />`;
+  // month ticks + labels
+  let cursor = new Date(start); cursor.setDate(1);
+  while (cursor <= end) {
+    const x = M + (Math.round((cursor - start)/86400000)/totalDays)*innerW;
+    grid += `<line x1="${x}" y1="${M}" x2="${x}" y2="${H-M}" stroke="rgba(96,165,250,0.12)" />`;
+    const label = cursor.toISOString().slice(0,7);
+    grid += `<text x="${x+4}" y="${M-8}" fill="#94a3b8" font-size="12">${label}</text>`;
+    cursor.setMonth(cursor.getMonth()+1);
+  }
+  if (today >= start && today <= end) {
+    const tx = M + (Math.round((today - start)/86400000)/totalDays)*innerW;
+    grid += `<line x1="${tx}" y1="${M}" x2="${tx}" y2="${H-M}" stroke="#f59e0b" stroke-width="2"/>`;
+    grid += `<text x="${tx+6}" y="${M+12}" fill="#f59e0b" font-size="12">Today</text>`;
+  }
 
-    if(showLabels){
-      const label=t.name.replace(/&/g,"&amp;"); const tw=approxTextWidth(label);
-      let tx=xs+8; const baseY=y+rowH-8; let bx=xs+2;
-      if(w < tw+14){ tx=xe+10; bx=tx-8; }
-      const rightEdge=M+innerW-6; if(tx+tw>rightEdge){ const d=(tx+tw)-rightEdge; tx-=d; bx-=d; }
-      const by=y+3, bh=rowH-6, bw=tw+10;
-      bars += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="6" fill="rgba(0,0,0,0.60)" stroke="rgba(255,255,255,0.18)" filter="url(#softShadow)"/>`;
-      bars += `<text x="${tx}" y="${baseY}" filter="url(#textHalo)">${label}</text>`;
-    }
-  });
+  let bars = "";
+  const colorFor = (t) => {
+    const s = (t.status||"").toLowerCase();
+    const f = (t.flag||"").toLowerCase();
+    if (s === "completed") return "var(--good)";
+    if (f === "late") return "var(--bad)";
+    if (f === "in-window") return "var(--warn)";
+    if (s === "in progress") return "var(--info)";
+    if (f === "upcoming") return "var(--upcoming)";
+    return "var(--unknown)";
+  };
 
-  svg.innerHTML = defs + grid + bars;
+  // approx text width helper (px) for font-size 14
+  const approxTextWidth = (txt) => Math.max(16, Math.round(txt.length * 7.5) + 10);
+
+  tasks.forEach((t, i) => {
+    const y = startY + i*(rowH + pad);
+    const s = parseDate(t.start), e = parseDate(t.finish);
+    const xs = M + (Math.round((s - start)/86400000) / totalDays) * innerW;
+    const xe = M + (Math.round((e - start)/86400000) / totalDays) * innerW;
+    const w = Math.max(2, xe - xs);
+    const c = colorFor(t);
+    bars += `<rect x="${xs}" y="${y}" width="${w}" height="${rowH}" rx="4" fill="${c}" />`;
+
+    if (showLabels) {
+      const label = t.name.replace(/&/g,"&amp;");
+      const tw = approxTextWidth(label);
+      let tx = xs + 6;
+      const baseY = y + rowH - 6; // baseline for text
+      let bx = xs + 2;            // background box x
+      // If bar too short for label, place label outside to the right
+      if (w < tw + 10) {
+        tx = xe + 8;
+        bx = tx - 6;
+      }
+      // clamp at the right edge
+      const rightEdge = M + innerW - 4;
+      if (tx + tw > rightEdge) {
+        const delta = (tx + tw) - rightEdge;
+        tx -= delta;
+        bx -= delta;
+      }
+      const by = y + 3;
+      const bh = rowH - 6;
+      const bw = tw + 6;
+      bars += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="4" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.18)"/>`;
+      bars += `<text x="${tx}" y="${baseY}" fill="#e6edf3" font-size="14">${label}</text>`;
+    }
+  });
+
+  svg.innerHTML = grid + bars;
 }
 
-function populateResourceFilter(){ const sel=document.getElementById("resourceFilter"); sel.innerHTML = `<option value="all">All</option>` + state.resources.map(r=>`<option value="${r}">${r}</option>`).join(""); }
-function renderAll(){ renderKPIs(state.rows); renderPhaseGrid(); renderMilestoneList("milestonesDue",state.milestones.due,"due"); renderMilestoneList("milestonesStart",state.milestones.starting,"starting"); renderTable(state.rows); renderGantt(state.rows); }
-
-async function loadData(){
-  errorEl.textContent=""; asofEl.textContent="Loading…";
-  
-  // *** MODIFIED to use the direct CSV link instead of the old Sheets API format ***
-  const url = CSV_URL;
-  
-  try{
-    const res=await fetch(url); 
-    // This is a basic check. Direct CSV links return 200 even for empty sheets, 
-    // so the next check for rows is more important.
-    if(!res.ok) throw new Error(`HTTP ${res.status}. Check if your CSV URL is correct and publicly accessible.`); 
-    const txt=await res.text();
-    const rows = csvToRows(txt);
-    if(!rows.length) throw new Error("No valid task rows parsed. Check sheet headers and data.");
-    state.rows = rows;
-    buildFromRows(rows);
-    populateResourceFilter();
-    renderAll();
-    asofEl.textContent = `As of ${state.today} · Window: ${state.minDate} → ${state.maxDate}`;
-  }catch(e){ console.error(e); errorEl.textContent="Could not load data. Please check CSV_URL and data format. "+e.message; asofEl.textContent="Error loading data"; }
+function renderAll(){
+  renderTable(); 
+  renderGantt();
+  renderMilestoneList("milestonesDue", DATA.milestones.due, "due");
+  renderMilestoneList("milestonesStart", DATA.milestones.starting, "starting");
 }
-
-document.getElementById("statusFilter").addEventListener("change",()=>{renderTable(state.rows);renderGantt(state.rows)});
-document.getElementById("resourceFilter").addEventListener("change",()=>{renderTable(state.rows);renderGantt(state.rows)});
-document.getElementById("showPhases").addEventListener("change",()=>{renderTable(state.rows)});
-document.getElementById("searchBox").addEventListener("input",()=>{renderTable(state.rows);renderGantt(state.rows)});
-document.getElementById("showLabels").addEventListener("change",()=>{renderGantt(state.rows)});
-document.getElementById("zoom").addEventListener("change",()=>renderGantt(state.rows));
-document.getElementById("reloadBtn").addEventListener("click",loadData);
-
-loadData();
+document.getElementById('zoom').addEventListener('change', renderGantt);
+renderAll();
 </script>
 </body>
 </html>
